@@ -220,12 +220,12 @@ public:
 	void database_show(ofstream&out);			            //// показать массив данных в файле 	
 	string readFile( ifstream&f) 
 	{
-		//std::ifstream f(fileName,ios::binary);
+		
 		f.seekg(0, ios::end);
 		size_t size = f.tellg();
 		string s(size, ' ');
 		f.seekg(0);
-		f.read(&s[0], size); // по стандарту можно в C++11, по факту работает и на старых компиляторах
+		f.read(&s[0], size); 
 		f.seekg(0);
 		return s;
 	}
@@ -271,9 +271,6 @@ void square::Bdata_create(ifstream&in)
 square::square(ifstream&in, ifstream&key1)
 {
 	S_1_create();
-	//cout << " Введите имя файла: ";
-	//cin >> cname_file;
-	
 	data = new byte*[N];
 	for (int i = 0; i < N; i++)
 		data[i] = new byte[N];
@@ -292,7 +289,7 @@ square::square(ifstream&in, ifstream&key1)
 	//// инициализация цифровой подписи ////
 							///// вычисляем R и S
 	//////// режим шифрования СВС
-	//SIZE = size1 + 16 + 32 + 16;								
+								
 	C0 = new byte*[N];
 	for (int i = 0; i < N; i++)
 		C0[i] = new byte[N];
@@ -749,9 +746,7 @@ void square::get_hesh()
 		mult_matrix(h0, h);
 		k++;
 	}
-	/*for (int i = 0; i < N; i++)
-		for (int j = 0; j < N; j++)
-			 key[i][j]=keyhesh[i][j];*/
+	
 	round_key_create();
 }
 void square::swap_matrix(byte a[N][N], byte**b)
@@ -806,7 +801,7 @@ void square::digit_sign()
 	q = stringToBigUnsigned(q1);
 
 	srand(time(0));
-	x = BigUnsigned(2 + 197); // rand() % 200
+	x = BigUnsigned(2 + 197); 
 
 	g = modexp(265, ((p - 1) / q), p);
 
@@ -816,9 +811,9 @@ void square::digit_sign()
 
 	BigUnsigned k;
 	srand(time(0));
-	k = BigUnsigned(1 + 197); // rand() % 200
+	k = BigUnsigned(1 + 197);
 
-	r = modexp(g, k, p); // одинаковый остается
+	r = modexp(g, k, p); 
 	cout << " r=" << r << endl;
 
 	string a = "";
@@ -866,12 +861,10 @@ void square::create_database_for_encryption()
 	SIZE = size1 + 16 + 32 + 16;
 	database = new byte[SIZE];
 
-	//string s2 = bigUnsignedToString(s);
 	byte *Sn;
 	Sn = BigUnsignedToByteArray(s, 16);
 	
-	//string s3 = bigUnsignedToString(r);
-	
+
 	byte*Rn;
 	Rn = BigUnsignedToByteArray(r, 32);
 	
@@ -905,7 +898,7 @@ void square::create_database_for_decryption(ifstream&in)
 	in.seekg(0);
 	if (SIZE % 16 != 0)
 	{
-		cout << "Error file was corrected !" << endl;
+		cout << "Error, file was corrected !" << endl;
 		system("pause");
 		exit(-1);
 	}
